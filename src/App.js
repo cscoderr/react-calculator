@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState, useEffect} from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+import Button from './components/Button';
+import Wrapper from './components/Wrapper';
+import Screen from './components/Screen';
+import ButtonWrapper from './components/ButtonWrapper';
+
+const buttonValues = [
+    [7, 8, 9, 'X'],
+    [4, 5, 6, '-'],
+    [1, 2, 3, '+'],
+    ['.', 0, '='],
+];
+
+
+const App = () => {
+    const [displayValue, setDisplayValue] = useState(0);
+
+    const numClickHandler = (e) => {
+        e.preventDefault();
+        const value = e.target.innerHTML;
+
+        setDisplayValue((prevValue) => prevValue === 0 ? value : prevValue + value);
+
+    }
+
+    useEffect(() => {
+        setDisplayValue(0);
+    }, [])
+    return (
+        <Wrapper>
+            <Screen value={displayValue}/>
+            <ButtonWrapper>
+                {
+                    buttonValues.flat().map((btn, i) => {
+                        return <Button key={i} className={btn === '=' ? 'equals' : ''} value={btn} buttonClicked={numClickHandler}/>
+                    })
+                }
+            </ButtonWrapper>
+            
+        </Wrapper>
+    );
 }
 
 export default App;
